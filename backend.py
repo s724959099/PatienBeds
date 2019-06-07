@@ -1,4 +1,5 @@
 from flask import Flask, request, abort
+from line_api import *
 # from linebot_commands import *
 
 
@@ -36,7 +37,4 @@ def handle_message(event):
 
 
 if __name__ == "__main__":
-    from utli import db
-
-    db.write_json({})
     app.run(port=8080, debug=True)

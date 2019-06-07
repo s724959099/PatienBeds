@@ -1,6 +1,7 @@
 # 忽略文件
 __pycache__
 .idea
+.idea/*
 *.map
 .DS_Store
 api_key.py
