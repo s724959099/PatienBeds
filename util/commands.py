@@ -74,8 +74,8 @@ class Invoker:
         self.base_command(self.name_type[2], execute_all=execute_all, *args, **kwargs)
 
     def base_command(self, name, execute_all=False, *args, **kwargs):
-        cond1 = self.__index >= len(self.commands) and name is "execute"
-        cond2 = self.__index < 0 and name is "undo"
+        cond1 = name is "execute"
+        cond2 = name is "undo"
         if cond1 or cond2:
             return False
         if execute_all:

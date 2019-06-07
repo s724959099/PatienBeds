@@ -1,42 +1,61 @@
 class Steps:
-    DEBUG = False
+    def __init__(self):
+        self.fn = self.step1
 
-    def debug_or_input(self, defaultstr, debugoutput):
-        return debugoutput if self.DEBUG else input(defaultstr)
-
-    def step1(self):
+    def step1(self, line, event, txt):
+        if txt.lower() != 'go':
+            line.reply('???')
+            return
         self.beds = Beds()
-        self.beds.display_index()
-        indeces = self.debug_or_input('請輸入沒有病床的編號(空格分割) ps:左邊 : ', '30 20 15')
+        msg = self.beds.display_index()
+        msg += '請輸入沒有病床的編號(空格分割) ps:左邊 : '
+        line.reply(msg)
+        self.fn = self.step2
+
+    def step2(self, line, event, txt):
+        indeces = txt
         indeces = list(map(int, indeces.split()))
         deleted_list = []
         for index in indeces:
             deleted_list.append(self.beds.del_by_index(index))
-        print('被刪除號碼為 : {}  剩下床數: {}'.format(" ".join(deleted_list), len(self.beds.data)))
+        msg = '被刪除號碼為 : {}  剩下床數: {}'.format(" ".join(deleted_list), len(self.beds.data))
+        self.step2_1(line, event, txt, prefix_msg=msg)
 
-    def step2(self):
-        while True:
-            nurse_count = self.debug_or_input('請輸入神聖護理師的數目: ', '5')
-            nurse_count = int(nurse_count)
-            nums = self.debug_or_input('請輸入分配數量(空格分割): ', '9 9 9 9 9')
-            nums = list(map(int, nums.split()))
-            if len(nums) != nurse_count or sum(nums) != len(self.beds.data):
-                print('輸入數量錯誤 請重新輸入: sum:{} beds: {}'.format(sum(nums), len(self.beds.data)))
-                continue
-            break
+    def step2_1(self, line, event, txt, prefix_msg=''):
+        msg = prefix_msg + '\n請輸入神聖護理師的數目: '
+        msg = msg.strip('\n')
+        line.reply(msg)
+        self.fn = self.step3
+
+    def step3(self, line, event, txt):
+        nurse_count = txt
+        nurse_count = int(nurse_count)
+        line.reply('請輸入分配數量(空格分割): ')
+        self.nurses_count = nurse_count
+        self.fn = self.step4
+
+    def step4(self, line, event, txt):
+        nums = txt
+        nums = list(map(int, nums.split()))
+        if len(nums) != self.nurses_count or sum(nums) != len(self.beds.data):
+            print()
+            msg = '輸入數量錯誤 請重新輸入: sum:{} beds: {}'.format(sum(nums), len(self.beds.data))
+            line.reply(msg)
+            self.fn = self.step2_1
+            return
 
         self.nurses = [Nurse(num) for num in nums]
-
-    def step3(self):
         leader = Leader()
-        leader.compare(self.nurses, self.beds)
+        msg = leader.compare(self.nurses, self.beds)
+        line.reply(msg)
+        self.fn = self.step1
 
-    def run(self):
-        fnsstr = [fnstr for fnstr in dir(self) if fnstr.startswith('step') and callable(getattr(self, fnstr))]
-        fnsstr = sorted(fnsstr)
-        for fnstr in fnsstr:
-            fn = getattr(self, fnstr)
-            fn()
+    def run(self, line, event):
+        txt = event.message.text
+        if txt.lower() == 'go':
+            self.fn = self.step1
+        fn = self.fn
+        fn(line, event, txt)
 
 
 class Beds:
@@ -69,8 +88,11 @@ class Beds:
         return ret
 
     def display_index(self):
+        msg = ''
         for i, d in enumerate(self.data):
-            print("{})-{}".format(i, d))
+            print()
+            msg += "{})-{}\n".format(i, d)
+        return msg
 
 
 class Nurse:
@@ -85,19 +107,22 @@ class Nurse:
         self.beds.append(bed)
 
     def display(self):
-        print('人數: {} 床: {}'.format(self.count, " ".join(self.beds)))
+        print()
+        return '人數: {} 床: {}'.format(self.count, " ".join(self.beds))
 
 
 class Leader:
     def compare(self, nurses, beds):
         n_i = 0
+        msg_list = []
         for bed in beds.data:
             nurse = nurses[n_i]
             nurse.add_bed(bed)
             if nurse.is_full():
                 n_i += 1
         for n in nurses:
-            n.display()
+            msg_list.append(n.display())
+        return "\n".join(msg_list)
 
 
 if __name__ == '__main__':

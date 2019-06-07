@@ -6,9 +6,7 @@ from linebot.models import (MessageEvent, TextMessage, TextSendMessage, ImageSen
 from util.commands import Invoker, SimpleCommandFactory
 
 try:
-    import api_key
-
-    channel_access_token = 'cdlIaYLoDlkHLH9cRb2n3K619kgO4dZxTlq/dXUYROHq5/PVncr35K10l5dNyrUYhN9I3+PqLNDDTdlr8G7k+SKWqvv+LY2s2zBpCHBP2TPWPI1KDxyvFMueHKAMs+1FzXoHmhKi9qIxk0ISlKNZjwdB04t89/1O/w1cDnyilFU='
+    channel_access_token = 'peFcTNOd2KFr+AfRCYAxBFgJVC6VTo5+Hj/zXlcHMW1aSo9BCfzgqGfV3L1MfNlFhN9I3+PqLNDDTdlr8G7k+SKWqvv+LY2s2zBpCHBP2TMvpfKQmEGq3/cwom54bIOKVzeyffcPkA3wr/xd5wwlxQdB04t89/1O/w1cDnyilFU='
     channel_secret = 'e3b946549c896cc5d87b85a905b32dc5'
 except Exception as e:
     channel_access_token = os.environ.get("channel_access_token", "YOUR_CHANNEL_ACCESS_TOKEN")

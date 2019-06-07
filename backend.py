@@ -1,6 +1,7 @@
 from flask import Flask, request, abort
 from line_api import *
 # from linebot_commands import *
+from manager import events_excute
 
 
 app = Flask(__name__)
@@ -32,8 +33,7 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    # events_excute(event)
-    pass
+    events_excute(event)
 
 
 if __name__ == "__main__":
