@@ -1,0 +1,8 @@
+# 忽略文件
+__pycache__
+.idea
+*.map
+.DS_Store
+api_key.py
+test_file/*
+db.json
