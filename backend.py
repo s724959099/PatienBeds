@@ -1,8 +1,6 @@
 from flask import Flask, request, abort
 from line_api import *
-# from linebot_commands import *
 from manager import events_excute
-
 
 app = Flask(__name__)
 
@@ -19,14 +17,7 @@ def callback():
 
     # get request body as text
     body = request.get_data(as_text=True)
-    print("body: ", body)
-
-    # handle webhook body
-
     handler.handle(body, signature)
-    # except Exception as e:
-    #     print(str(e))
-    #     abort(400)
 
     return 'OK'
 

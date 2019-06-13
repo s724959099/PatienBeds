@@ -7,3 +7,4 @@ __pycache__
 api_key.py
 test_file/*
 db.json
+*.temp

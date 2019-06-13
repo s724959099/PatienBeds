@@ -5,19 +5,6 @@ from libs import Steps, Nurse, Leader, Beds
 steps = Steps()
 
 
-def go(line, event):
-    global s
-    s = Steps()
-    message = 'demo1'
-    line.reply(message)
-
-
-def go1(line, event):
-    global s
-    message = s.a
-    line.reply(message)
-
-
 class Command:
     def __init__(self, fn, txt):
         self.fn = fn
@@ -42,15 +29,3 @@ def events_excute(event):
     line = LineAPI(event)
     global steps
     steps.run(line, event)
-    # commands = [
-    #     SimpleCommandFactory(demo, 'demo')
-    # ]
-    # cmds = Commands([
-    #     Command(go, 'go'),
-    #     Command(go1, 'go1'),
-    # ])
-    # cmds.execute(line, event)
-
-    # invoker = Invoker()
-    # invoker.appends(commands)
-    # invoker.execute(execute_all=True, event=event, line=line)

@@ -126,8 +126,4 @@ class Leader:
 
 
 if __name__ == '__main__':
-    # b = Beds()
-    # b.display_index()
-    s = Steps()
-    s.DEBUG = False
-    s.run()
+    pass
